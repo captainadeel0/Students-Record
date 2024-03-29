@@ -1,116 +1,286 @@
 <?php
-include("data.php");
+include("config.php");
 
 $id = $_GET['id'];
+if(!empty($id)){
 
 $sql = "SELECT * FROM students WHERE id = $id";
 $result = mysqli_query($conn , $sql);
 
-if (mysqli_num_rows($result) > 0) {
-    $result = mysqli_fetch_assoc($result);
-
+if ($row= mysqli_fetch_assoc($result)) {
+        $id = $row['id'];
+        $name = $row['name'];
+        $fname = $row['fname'];
+        $cnic_no = $row['cnic_no'];
+        $mobile = $row['mobile'];
+        $gender = $row['gender'];
+        $address = $row['address'];
+        $status = $row['status'];
+}
     // echo "<pre>"; print_r($result); echo "</pre>";
 } else {
-    die("no record found");
+    header( "Location:index.php" ) ;
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Insert Query</title>
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="./assets/fonts/css/all.css">
     <script src="./assets/fonts/js/all.js"></script>
 </head>
+
 <body>
-    <div class="container w-50 shadow mx-auto mt-3">
-        <div class="bg-info p-2 mb-3">
-            <h2 class="text-white text-center">Update Record</h2>
-        </div>
-        <div class="text-center mb-4">
-           
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Dropdown
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Disabled</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+            </form>
         </div>
-
-        <form method="POST" action="data.php" class="p-4 border">
-        <input type="hidden" name="id" value="<?= $result['id'] ?>" />
-        <h6>Name</h6>
-            <div class="form-group">
-                <input type="text" name="name" value="<?= $result['name'] ?>" placeholder="Enter your name" class="form-control " required>
-            </div>
-            <h6>Father Name</h6>
-            <div class="form-group">
-                <input type="text" name="fname" value="<?= $result['fname'] ?>" placeholder="Enter your  Father Name" class="form-control " required>
-            </div>
-            <h6>CNIC:</h6>
-            <div class="form-group">
-                <input type="integer" name="cnic_no" value="<?= $result['cnic_no'] ?>" placeholder="XXXXX-XXXXXXX-X" class="form-control " required>
-            </div>
-            <h6>Mobile Number:</h6>
-            <div class="form-group">
-                <input type="integer" name="mobile" value="<?= $result['mobile'] ?>" placeholder="0000-0000000" class="form-control " required>
-            </div>
-            <h6>Select Gender:</h6>
-  <input type="radio"  name="gender" value="<?= $result['gender'] ?>">
-  <label for="male">Male</label><br>
-  <input type="radio" name="gender" value="<?= $result['gender'] ?>">
-  <label for="female">Female</label><br>
-            
-            
-            <input type="submit" class="btn btn-success w-100" name="submit" value="Update and Save" />
-        </form>
+    </nav>
+    <div class="container">
+        <h2 class="text-light bg-success m-3 p-1 text-center border  ">Students Form</h2>
     </div>
-    
+
+
+    <form method="POST" action="config.php" class="p-2 ">
+
+
+        <div class="row m-2">
+            <div class="col">
+                <h6>Name</h6>
+                <input type="text" name="name" value='<?php echo $name;?>' class="form-control border border-success shadow" placeholder="Enter name" required>
+            </div>
+            <div class="col">
+                <h6>Father Name</h6>
+                <input type='text' name="fname"  value='<?php echo $fname;?>' class="form-control border border-success shadow" placeholder="Enter father's name" required>
+
+            </div>
+            <div class="col">
+                <h6>CNIC</h6>
+                <input type='text' name="cnic_no"  value='<?php echo $cnic_no;?>' class="form-control border border-success shadow" data-inputmask="'mask':'99999-9999999-9'" placeholder="xxxxx-xxxxxxx-x" required>
+            </div>
+            <div class="col ">
+                <h6>Mobile NO.</h6>
+                <input type='text' name="mobile"  value='<?php echo $mobile;?>' class="form-control border border-success shadow" data-inputmask="'mask':'9999-9999999'" placeholder="xxxx-xxxxxxx" required>
+            </div>
+        </div>
+        <div class="row m-2 ">
+            <div class="col-3 ">
+                <h6>Gender</h6>
+                <select name="gender" class="form-control border border-success shadow"required>
+                    <option value='-1'>--Select Gender--</option>
+                    <option <?php if($gender=='male') echo "selected"; ?> >Male</option>
+                    <option <?php if($gender=='female') echo "selected"; ?>>Female</option>
+                    <option>Others</option>
+                </select>
+            </div>
+            <div class="col-9 ">
+                <h6>Address</h6>
+                <input type="text" name="address" value='<?php echo $address;?>' class="form-control border border-success shadow" placeholder="Enter your address" required>
+            </div>
+        </div>
+        <div class="form-check">
+            <label class="form-check-label">&nbsp;&nbsp;&nbsp;&nbsp;
+                <input class="form-check-input " type="checkbox" name="remember"> Remember me
+            </label>
+        </div>
+        <div class="button">
+            <input class="btn btn-info bg-success m-4" type="submit" name="submit" value="Update & Save">
+        </div>
+
+    </form>
+
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="./assets/jquery.min.js"></script>
+    <script src="./assets/jquery.inputmask.bundle.js"></script>
 
-<style>
-/* styles.css */
 
-/* Container */
-.container {
-    max-width: 50%;
-}
+    <script>
+        $(":input").inputmask();
+    </script>
+    <style>
+        /* styles.css */
 
-/* Registration Form Title */
-.bg-info {
-    background-color: #17a2b8 !important; /* override Bootstrap default background color */
-}
+        /* Container */
+        .container {
+            max-width: 50%;
+        }
 
-/* Form Elements */
-form input[type="text"],
-form input[type="number"],
-form select {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ced4da; /* Bootstrap default input border color */
-    border-radius: 5px;
-    box-sizing: border-box;
-}
+        h2 {
+            border-radius: 5px;
+        }
 
-/* Radio Button and Checkbox */
-form input[type="radio"] {
-    margin-right: 10px;
-}
+        /* Registration Form Title */
+        .bg-info {
+            background-color: #17a2b8 !important;
+            /* override Bootstrap default background color */
+        }
 
-/* Submit Button */
-form input[type="submit"] {
-    padding: 10px 20px;
-    background-color: #007bff; /* Bootstrap primary button color */
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
+        /* Form Elements */
+        form input[type="text"],
+        form input[type="number"],
+        form select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ced4da;
+            /* Bootstrap default input border color */
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
 
-form input[type="submit"]:hover {
-    background-color: #0056b3; /* Darker shade of primary color on hover */
-}
-</style>
+        /* Radio Button and Checkbox */
+        form input[type="radio"],
+        form input[type="checkbox"] {
+            margin-right: 10px;
+        }
 
+        /* Submit Button */
+        form input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #007bff;
+            /* Bootstrap primary button color */
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        form input[type="submit"]:hover {
+            background-color: #0056b3;
+            /* Darker shade of primary color on hover */
+        }
+
+        button a {
+            text-decoration: none;
+            color: #ced4da;
+        }
+    </style>
+
+    <div class="container">
+
+        <h2 class="text-light bg-success m-3 p-1 text-center border-radius ">Students Record</h2>
+    </div>
+
+    <div class="container-fluid">
+
+        <table class="table table-striped ">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Father Name</th>
+                    <th scope="col">CNIC</th>
+                    <th scope="col">Mobile NO</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+
+                include("config.php");
+                $sql = "SELECT * FROM `students` ";
+                $result = mysqli_query($conn, $sql);
+
+                if (mysqli_num_rows($result) > 0) {
+
+                    while ($row = mysqli_fetch_assoc($result)) {
+
+                        $id = $row['id'];
+                        $name = $row['name'];
+                        $fname = $row['fname'];
+                        $cnic_no = $row['cnic_no'];
+                        $mobile = $row['mobile'];
+                        $gender = $row['gender'];
+                        $address = $row['address'];
+                        $status = $row['status'];
+
+
+                ?>
+
+                        <tr>
+                            <td><?php echo $id;  ?></td>
+                            <td><?php echo $name;  ?></td>
+                            <td><?php echo $fname;  ?></td>
+                            <td><?php echo $cnic_no;  ?></td>
+                            <td><?php echo $mobile;  ?></td>
+                            <td><?php echo $gender;  ?></td>
+                            <td><?php echo $address;  ?></td>
+
+                            <td><?php echo '<span class="badge bg-success text-white">Active</span>' ?></td>
+
+                            <td>
+
+                                <select name="action" class="form-control" onchange="location = this.value;">
+                                    <option value="#" selected>--Option--</option>
+                                    <option value="edit.php?id=<?php echo $id; ?>">Edit</option>
+                                    <option value="delete.php?id=<?php echo $id; ?>">Delete</option>
+                                    <option value="#">Active</option>
+                                    <option value="#">Inactive</option>
+                                </select>
+
+
+                            </td>
+                        </tr>
+
+
+
+
+
+
+                <?php
+                    }
+                }
+                ?>
+
+
+
+
+            </tbody>
+        </table>
+
+    </div>
+</body>
+
+</html>

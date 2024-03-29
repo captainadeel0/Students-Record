@@ -1,5 +1,5 @@
 <?php
- include("data.php");
+ include("config.php");
 
  $id = $_GET['id'];
 
@@ -8,7 +8,7 @@
 
     
 
-    header("Location: index.php");
+    header("Location:index.php");
 
  
 
